@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+/* Design tokens (from Figma). Use them as bg-brand, text-danger, border-line ... */
+@theme {
+  --color-brand: #0f382c;
+  --color-brand-accent: #304e3c;
+  --color-surface: #faf8f3;
+  --color-line: #dad9d7;
+  --color-muted: #64748b;
+  --color-subtle: #8491a1;
+  --color-gold: #d4a72c;
+  --color-gold-light: #d4af37;
+  --color-upload-text: #737794;
+
+  --color-danger: #f23c34;
+  --color-danger-bg: #fef2f2;
+  --color-danger-border: #ffabab;
+
+  --color-warning: #9a451a;
+  --color-warning-bg: #fffbeb;
+  --color-warning-border: #b4a66a;
+}
+
+:root {
+  color-scheme: light;
+}
+html {
+  min-height: 100%;
+}
+body {
+  margin: 0;
+  font-family: var(--font-cairo), Arial, Helvetica, sans-serif;
+}
+
+button,
+select {
+  cursor: pointer;
+}
+a {
+  text-underline-offset: 3px;
+}
