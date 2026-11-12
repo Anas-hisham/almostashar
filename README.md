@@ -166,59 +166,6 @@ Minicato builds on the same general legal-technology direction as the previous d
 
 ---
 
-## 🚀 Getting Started
-
-> 🔧 *Fill in once the implementation stack is final.*
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/<your-username>/minicato.git
-cd minicato
-
-# 2. Install dependencies
-# <command for your stack>
-
-# 3. Configure environment variables
-cp .env.example .env
-
-# 4. Run the app
-# <command for your stack>
-```
-
----
-
-## 📸 Screenshots
-
-<!-- Add screenshots to /docs/screenshots and uncomment -->
-<!--
-| Contract Analysis | Smart Legal Triage | Lawyer Discovery |
-|---|---|---|
-| ![](docs/screenshots/analysis.png) | ![](docs/screenshots/triage.png) | ![](docs/screenshots/discovery.png) |
--->
-
----
-
-## 👨‍💻 Team
-
-| Name | Role |
-|---|---|
-| _Your Name_ | _Role_ |
-| _Team Member_ | _Role_ |
-
-**Supervisor:** _Name_ · **Department / University:** _Name_
-
----
-
-## ⚠️ Disclaimer
-
-Minicato provides **AI-assisted guidance for understanding legal information**. It does not replace professional legal advice. For legal decisions, consult a qualified, verified lawyer.
-
----
-
-## 📄 License
-
-_Choose a license (e.g. MIT) and add a `LICENSE` file._
-
 <div align="center">
 
 **Minicato — Graduation Project Documentation**
