@@ -22,11 +22,11 @@ export default function LawyerProfileScreen({ lawyerId }: { lawyerId: number }) 
       ) : failed || !lawyer ? (
         <Alert title="تعذر تحميل بيانات المحامي" description="حاول مرة أخري بعد قليل." />
       ) : (
-        <div className="flex flex-col gap-[33px]">
+        <div className="flex flex-col gap-8.25">
           <LawyerHeaderCard lawyer={lawyer} />
 
           {/* RTL: the first column is on the right → services first, booking card on the left (as in Figma) */}
-          <div className="grid items-start gap-[33px] lg:grid-cols-[2043fr_1592fr]">
+          <div className="grid items-start gap-8.25 lg:grid-cols-[2043fr_1592fr]">
             <ServicesReviewsCard
               services={(lawyer.services ?? []).filter((s) => s.isActive !== false)}
               reviews={reviews}

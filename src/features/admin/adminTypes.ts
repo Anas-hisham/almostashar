@@ -55,6 +55,7 @@ export interface UnverifiedLawyer {
     phoneNo?: string | null;
     yearsOfExperience?: number | null;
     createdAt?: string | null;
+    email: string | null;
 }
 
 export interface LawyerSpecialization {
