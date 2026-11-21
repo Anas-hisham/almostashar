@@ -1,3 +1,5 @@
+import type { ServiceType } from "@/shared/types/enums";
+
 /* ---------- requests (match the Swagger bodies exactly) ---------- */
 
 export interface AddLawyerServiceRequest {
@@ -19,6 +21,9 @@ export interface LawyerServiceItem {
   id: number;
   serviceId: number;
   title?: string | null;
+  /** One line under the title when the service has no `duration` (e.g. the consultation). */
+  description?: string | null;
+  serviceType?: ServiceType | null;
   price: number;
   duration?: string | null;
   isActive?: boolean;

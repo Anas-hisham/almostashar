@@ -94,8 +94,29 @@ function AccountMenu() {
     }
   }
 
+  // logged-in client / lawyer: the avatar opens their profile directly (no dropdown)
+  const role = user?.role?.toLowerCase();
+  const profileHref =
+    isLoggedIn && role === "client"
+      ? ROUTES.clientProfile
+      : isLoggedIn && role === "lawyer"
+        ? ROUTES.lawyerProfile
+        : null;
+
+  if (profileHref) {
+    return (
+      <Link
+        href={profileHref}
+        aria-label="الملف الشخصي"
+        className="h-11 w-11 overflow-hidden rounded-xl bg-[#EFEBE0] ring-[#C5A059] transition hover:ring-2 focus-visible:outline-none focus-visible:ring-2"
+      >
+        <UserAvatar src={user?.profileImage} alt={fullName} />
+      </Link>
+    );
+  }
+
   return (
-    <div ref={rootRef} className="relative flex">
+    <div ref={rootRef} className="relative flex ">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -189,6 +210,11 @@ function AccountMenu() {
 }
 
 export default function Navbar() {
+  const { user: authUser, status: authStatus } = useAppSelector((s) => s.auth);
+  // logged in: "home" is the dashboard, the public landing page is never shown
+  const homeHref =
+    authStatus === "authenticated" && authUser ? getHomeRoute(authUser.role) : "/";
+  const links = NAV_LINKS.map((l) => (l.href === "/" ? { ...l, href: homeHref } : l));
   const [menuOpen, setMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
@@ -217,16 +243,16 @@ export default function Navbar() {
       dir="rtl"
       className={`${cairo.className} relative z-40 w-full border-b border-[#E2E8E4] bg-[#FAF9F5]/95 backdrop-blur-md`}
     >
-      <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-3 px-4 py-2">
+      <div className="mx-auto flex max-w-350 items-center justify-between gap-3 px-4 py-2">
         {/* Logo */}
-        <Link href="/" className="flex shrink-0 items-center gap-2">
+        <Link href={homeHref} className="flex shrink-0 items-center gap-2">
           <Image
             src={LOGO_SRC}
             alt="مينيكاتو"
             width={48}
             height={48}
             priority
-            className="h-12 w-12 rounded-full border object-cover"
+            className="h-12 w-12 rounded-full border object-cover "
           />
 
           <div className="flex flex-col leading-tight">
@@ -248,7 +274,7 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-1 xl:flex">
-          {NAV_LINKS.map(({ label, href, icon: Icon }) => (
+          {links.map(({ label, href, icon: Icon }) => (
             <Link
               key={href}
               href={href}
@@ -304,8 +330,8 @@ export default function Navbar() {
           id="mobile-menu"
           className="absolute inset-x-0 top-full border-b border-[#E2E8E4] bg-white shadow-xl xl:hidden"
         >
-          <div className="mx-auto flex max-w-[1400px] flex-col gap-1 px-4 py-3">
-            {NAV_LINKS.map(({ label, href, icon: Icon }) => (
+          <div className="mx-auto flex max-w-350 flex-col gap-1 px-4 py-3">
+            {links.map(({ label, href, icon: Icon }) => (
               <Link
                 key={href}
                 href={href}

@@ -27,7 +27,14 @@ export const clientApi = {
 
   getProfile: async (): Promise<ClientProfile> => {
     const { data } = await api.get<ApiResponse<ClientProfile>>(CLIENT.PROFILE);
-    return data.value;
+    const raw = data.value as ClientProfile & Record<string, unknown>;
+
+    // the backend may name the image field differently: take the first image-like string
+    const imageKey = Object.keys(raw).find(
+      (k) => /image|photo|avatar|picture/i.test(k) && typeof raw[k] === "string" && raw[k],
+    );
+
+    return { ...raw, profileImage: imageKey ? (raw[imageKey] as string) : raw.profileImage ?? null };
   },
 
   updateProfile: async (body: UpdateClientProfileRequest): Promise<void> => {

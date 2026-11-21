@@ -20,6 +20,7 @@ import { ClientDocuments, LawyerDocuments } from "@/features/auth/components/reg
 import SpecializationPicker from "@/features/auth/components/register/SpecializationPicker";
 import { useAsyncAction } from "@/shared/hooks/useAsyncAction";
 import { ROUTES } from "@/constants";
+import { setLoginPrefill } from "@/lib/loginPrefill";
 import Alert from "@/shared/components/ui/feedback/Alert";
 import Button from "@/shared/components/ui/Button";
 import FormField from "@/shared/components/ui/form/FormField";
@@ -148,7 +149,9 @@ export default function RegisterForm({ accountType }: RegisterFormProps) {
       }
 
       setErrors({});
-      // router.push(ROUTES.verifyEmail);
+      // go to login with the data just registered, already filled in
+      setLoginPrefill({ email: values.email.trim(), password: values.password });
+      router.push(ROUTES.login);
     } catch (error) {
   if (isAxiosError(error)) {
     console.error("Status:", error.response?.status);

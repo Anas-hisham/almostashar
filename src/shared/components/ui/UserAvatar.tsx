@@ -54,7 +54,7 @@ export default function UserAvatar({ src, alt = "" }: UserAvatarProps) {
       src={url}
       alt={alt}
       onError={() => setFailedUrl(url)}
-      className="h-full w-full object-cover"
+      className="h-full w-full object-cover rounded-full"
     />
   );
 }

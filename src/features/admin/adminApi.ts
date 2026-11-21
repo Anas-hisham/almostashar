@@ -1,4 +1,5 @@
 import { api } from "@/lib/axios";
+import { pickByName } from "@/lib/pickImage";
 import { API_ENDPOINTS } from "@/constants/apiEndpoints";
 import type {
   ApiResponse,
@@ -33,7 +34,18 @@ export const adminApi = {
       API_ENDPOINTS.ADMIN.LAWYER_BY_ID(id),
     );
 
-    return data.value;
+    const raw = data.value as LawyerDetails & Record<string, unknown>;
+
+    // the photo fields are named differently in the backend (e.g. avatarUrl), so find them by name
+    return {
+      ...raw,
+      avatarPhoto: raw.avatarPhoto ?? pickByName(raw, /avatar|profile.?(image|photo|picture)/i),
+      ssnPhoto: raw.ssnPhoto ?? pickByName(raw, /ssn|national|identity|id.?(photo|card|image)/i),
+      syndicateCardPhoto:
+        raw.syndicateCardPhoto ?? pickByName(raw, /syndicate.*(card|photo|image|url)/i),
+      practiceCertificatesPhoto:
+        raw.practiceCertificatesPhoto ?? pickByName(raw, /certificate|practice/i),
+    };
   },
 
   getUsers: async (params: GetUsersParams = {}): Promise<AdminUsersPage> => {

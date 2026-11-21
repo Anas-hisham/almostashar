@@ -12,6 +12,7 @@ import {
 import type { LoginRequest } from "@/features/auth/authTypes";
 
 import { tokenStorage } from "@/lib/tokenStorage";
+import { takeLoginPrefill } from "@/lib/loginPrefill";
 import { useAsyncAction } from "@/shared/hooks/useAsyncAction";
 import { useAppDispatch } from "@/store/hooks";
 import { ROUTES } from "@/constants";
@@ -30,10 +31,9 @@ export default function LoginForm() {
   const router = useRouter();
   const { run, loading, error, clearError } = useAsyncAction(authApi.login);
 
-  const [form, setForm] = useState<LoginRequest>({
-    email: "",
-    password: "",
-  });
+  const [form, setForm] = useState<LoginRequest>(
+    () => takeLoginPrefill() ?? { email: "", password: "" },
+  );
 
   const [fieldErrors, setFieldErrors] = useState<LoginFieldErrors>({});
 

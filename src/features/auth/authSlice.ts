@@ -20,11 +20,15 @@ const authSlice = createSlice({
       state.user = null;
       state.status = 'unauthenticated';
     },
+    /** Merge fresh backend data into the logged-in user (name, image ...). */
+    updateUser(state, action: PayloadAction<Partial<AuthUser>>) {
+      if (state.user) state.user = { ...state.user, ...action.payload };
+    },
     setChecking(state) {
       state.status = 'checking';
     },
   },
 });
 
-export const { setAuthenticated, setUnauthenticated, setChecking } = authSlice.actions;
+export const { setAuthenticated, setUnauthenticated, setChecking, updateUser } = authSlice.actions;
 export default authSlice.reducer;

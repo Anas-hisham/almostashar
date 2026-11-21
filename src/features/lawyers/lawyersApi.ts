@@ -1,4 +1,5 @@
 import { api } from "@/lib/axios";
+import { pickImage } from "@/lib/pickImage";
 import { API_ENDPOINTS } from "@/constants/apiEndpoints";
 import type { ApiResponse } from "@/features/admin/adminTypes";
 import type { CaseSummary } from "@/features/cases/casesTypes";
@@ -16,7 +17,23 @@ export const lawyersApi = {
 
   getLawyerProfile: async (lawyerId: number): Promise<LawyerProfile> => {
     const { data } = await api.get<ApiResponse<LawyerProfile>>(LAWYERS.PROFILE(lawyerId));
-    return data.value;
+    const raw = data.value as LawyerProfile & Record<string, unknown>;
+    // The backend may name the id lawyerId / userId (or omit it): fall back to the id we asked for,
+    // so links built from `lawyer.id` (booking, report) never become "undefined".
+    const rawId = [raw.id, raw.lawyerId, raw.userId].map(Number).find((n) => Number.isInteger(n) && n > 0);
+    // The profile endpoint names a few fields differently from our types: map them once, here.
+    const specializations = (raw.specializations ?? []).map((s) => {
+      const item = s as unknown as Record<string, string>;
+      return { ...s, title: item.title ?? item.name, arabicTitle: item.arabicTitle ?? item.arabicName ?? item.name };
+    });
+    return {
+      ...raw,
+      id: rawId ?? lawyerId,
+      rating: raw.rating ?? (raw.ratingAverage as number | undefined) ?? null,
+      reviewsCount: raw.reviewsCount ?? (raw.ratingsCount as number | undefined) ?? null,
+      specializations,
+      profileImage: pickImage(raw) ?? raw.profileImage ?? null,
+    };
   },
 
   /* ----- the logged-in lawyer ----- */

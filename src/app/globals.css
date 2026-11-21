@@ -12,6 +12,13 @@
   --color-gold-light: #d4af37;
   --color-upload-text: #737794;
 
+  /* Latin digits & English labels (Figma uses Inter next to Cairo) */
+  --font-inter: var(--font-inter-next), Arial, sans-serif;
+
+  /* profile / settings screens */
+  --color-page: #cbbdbd;
+  --color-brand-soft: #e9fcf3;
+
   --color-danger: #f23c34;
   --color-danger-bg: #fef2f2;
   --color-danger-border: #ffabab;

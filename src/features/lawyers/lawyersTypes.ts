@@ -1,4 +1,5 @@
 import type { Specialization } from "@/features/lookups/lookupsTypes";
+import type { LawyerServiceItem } from "@/features/lawyerServices/lawyerServicesTypes";
 
 /* ---------- requests ---------- */
 
@@ -44,6 +45,13 @@ export interface LawyerSummary {
 export interface LawyerProfile extends LawyerSummary {
   bio?: string | null;
   about?: string | null;
+  /** "ترخيص #39/204" on the public profile */
+  licenseNumber?: string | null;
+  /** Services + prices shown on the public profile and offered in the booking form. */
+  services?: LawyerServiceItem[] | null;
+  /** Needed to open a direct request (see clientRequestsOptions.buildDirectRequest). */
+  governorateId?: number | null;
+  cityId?: number | null;
 }
 
 export interface LawyerAnalytics {

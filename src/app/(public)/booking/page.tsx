@@ -1,3 +1,11 @@
+import { Suspense } from "react";
+import BookingScreen from "@/features/clientRequests/components/BookingScreen";
+
 export default function Page() {
-  return <p>Hi</p>;
+  // useSearchParams needs a Suspense boundary
+  return (
+    <Suspense>
+      <BookingScreen />
+    </Suspense>
+  );
 }

@@ -8,7 +8,7 @@ const emailSchema = z
   .min(1, "اكتب البريد الالكتروني")
   .pipe(z.email("البريد الالكتروني غير صحيح"));
 
-const passwordSchema = z
+export const passwordSchema = z
   .string()
   .min(8, "كلمة المرور يجب ألا تقل عن 8 أحرف")
   .regex(/[A-Z]/, "كلمة المرور يجب أن تحتوي على حرف إنجليزي كبير")
@@ -16,7 +16,7 @@ const passwordSchema = z
 
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 
-const imageFile = (requiredMessage: string) =>
+export const imageFile = (requiredMessage: string) =>
   z
     .instanceof(File, { error: requiredMessage })
     .refine((file) => ["image/png", "image/jpeg"].includes(file.type), "اختر صورة بصيغة PNG أو JPG")
@@ -27,7 +27,7 @@ const selectedId = (message: string) => z.number({ error: message }).positive(me
 /** Turns zod issues into { fieldName: firstMessage }. */
 export type FieldErrors = Record<string, string>;
 
-function validateWith<S extends z.ZodType>(schema: S, values: unknown) {
+export function validateWith<S extends z.ZodType>(schema: S, values: unknown) {
   const result = schema.safeParse(values);
 
   if (result.success) {

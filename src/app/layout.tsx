@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
-import { Cairo } from "next/font/google";
+import { Cairo, Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "@/app/providers";
 import Navbar from "@/shared/components/layout/Navbar";
 import Footer from "@/shared/components/layout/Footer";
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
-  weight: ["400", "500", "600", "700", "900"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   variable: "--font-cairo",
+});
+
+/** Latin numbers / "Choose Files" use Inter in the Figma design. */
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-inter-next",
 });
 
 export const metadata: Metadata = {
@@ -21,7 +28,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir="rtl">
-      <body className={`${cairo.variable} min-h-screen bg-white text-slate-900`}>
+      <body className={`${cairo.variable} ${inter.variable} min-h-screen bg-white text-slate-900`}>
         <Providers>
           <Navbar />
           {children}

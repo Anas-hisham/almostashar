@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { clientApi } from "@/features/client/clientApi";
+import { lawyersApi } from "@/features/lawyers/lawyersApi";
 import { tokenStorage } from "@/lib/tokenStorage";
 import { restoreSession } from "@/lib/session";
-import { setAuthenticated, setUnauthenticated } from "@/features/auth/authSlice";
+import { setAuthenticated, setUnauthenticated, updateUser } from "@/features/auth/authSlice";
 
 /**
  * Runs once when the app opens / the page is reloaded.
@@ -14,6 +16,39 @@ import { setAuthenticated, setUnauthenticated } from "@/features/auth/authSlice"
  */
 export default function AuthBootstrap() {
   const dispatch = useAppDispatch();
+  const userId = useAppSelector((s) => s.auth.user?.id);
+  const role = useAppSelector((s) => s.auth.user?.role);
+  const syncedFor = useRef<number | null>(null);
+
+  // after login / page refresh: put the profile saved in the database into Redux
+  useEffect(() => {
+    const r = role?.toLowerCase();
+    if (!userId || (r !== "client" && r !== "lawyer") || syncedFor.current === userId) return;
+    syncedFor.current = userId;
+
+    const load: Promise<{
+      firstName?: string;
+      lastName?: string;
+      email?: string;
+      image?: string | null;
+    }> =
+      r === "client"
+        ? clientApi.getProfile().then((p) => ({
+            firstName: p.firstName,
+            lastName: p.lastName,
+            email: p.email,
+            image: p.profileImage,
+          }))
+        : lawyersApi.getLawyerProfile(userId).then((p) => ({ image: p.profileImage }));
+
+    load
+      .then(({ image, ...rest }) =>
+        dispatch(updateUser({ ...rest, ...(image ? { profileImage: image } : {}) })),
+      )
+      .catch(() => {
+        syncedFor.current = null; // allow a retry on the next render
+      });
+  }, [userId, role, dispatch]);
 
   useEffect(() => {
     let cancelled = false;
